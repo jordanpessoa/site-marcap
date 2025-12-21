@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Marcap</title>
+  <style>
+    /* Reset - não altere nada no layout ou botões existentes */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #f4f7fa 0%, #e6ebef 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #1c1c1e;
+    }
+
+    .container {
+      background-color: white;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .container:hover {
+      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #007aff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6e6e73;
+      margin-bottom: 25px;
+      font-size: 0.95rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    label {
+      text-align: left;
+      font-weight: 500;
+      color: #3a3a3c;
+      font-size: 0.9rem;
+    }
+
+    input {
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid #d1d1d6;
+      background-color: #f9f9fb;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #007aff;
+      outline: none;
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    }
+
+    button {
+      background-color: #007aff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0066d6;
+    }
+
+    #loginMsg {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login - Marcap</h1>
+    <p>Acesse sua conta para visualizar sua agenda.</p>
+
+    <form id="loginForm">
+      <label for="telefone">Telefone:</label>
+      <input type="text" id="telefone" name="telefone" placeholder="Ex: 24999999999" required>
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p id="loginMsg"></p>
+  </div>
+
+  <script>
+    async function verificarSessao() {
+      const sessionId = localStorage.getItem('sessionId');
+      const clientId = localStorage.getItem('clientId');
+
+      if (!sessionId || !clientId) return;
+
+      try {
+        const res = await fetch('/api/session/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, clientId })
+        });
+
+        const data = await res.json();
+        if (data.valid) {
+          window.location.href = 'agendaa.html';
+        }
+      } catch (err) {
+        console.warn('Sessão inválida ou expirada');
+      }
+    }
+
+    verificarSessao();
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const telefone = document.getElementById('telefone').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+      const msg = document.getElementById('loginMsg');
+
+      msg.textContent = '';
+      msg.style.color = '#44bd32'; // verde para sucesso
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ telefone, senha })
+        });
+
+        const data = await res.json();
+        msg.textContent = data.message;
+
+        if (res.ok) {
+          localStorage.setItem('sessionId', data.sessionId);
+          localStorage.setItem('clientId', data.clientId);
+
+          // Redirecionar para agendaa.html
+          setTimeout(() => {
+            window.location.href = 'agendaa.html';
+          }, 1000);
+        } else {
+          msg.style.color = 'red';
+        }
+      } catch (err) {
+        msg.textContent = "Erro ao conectar com o servidor.";
+        msg.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>

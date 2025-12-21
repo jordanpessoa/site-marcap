@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marcap - Planos</title>
+<style>
+  /* ======== ESTILOS GERAIS ======== */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ======== CABEÇALHO ======== */
+  header {
+    background-color: #0d47a1;
+    color: white;
+    padding: 30px 40px;
+  }
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .header-left h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .header-left p {
+    margin: 10px 0 0;
+    font-size: 1.4rem;
+    color: #dfe6f0;
+    font-weight: 500;
+  }
+  .header-right a {
+    background: #ffffff;
+    color: #0d47a1;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* ======== SEÇÃO PRINCIPAL ======== */
+  .top-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .top-left {
+    flex: 1 1 300px;
+  }
+  .top-left p {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0d47a1;
+  }
+
+  /* ======== CHAT ======== */
+  .whatsapp-flutuante {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-header {
+    background-color: #0d47a1;
+    color: #fff;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+  }
+  .chat-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #e5ddd5;
+    height: 300px;
+  }
+  .message {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  .message.client { justify-content: flex-end; }
+  .message .bubble {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+  }
+  .message.secretaria .bubble {
+    background-color: #fff;
+    border-radius: 15px 15px 15px 0;
+  }
+  .message.client .bubble {
+    background-color: #dcf8c6;
+    border-radius: 15px 15px 0 15px;
+  }
+  .digitando {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #777;
+    padding: 6px 14px;
+  }
+
+  /* ======== PLANOS ======== */
+  .planos {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .planos h2 {
+    text-align: center;
+    color: #0d47a1;
+    margin-bottom: 40px;
+    font-size: 1.9rem;
+  }
+  .plano-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .plano-card {
+    flex: 0 0 calc(30% - 13.33px);
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    padding: 18px 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    min-width: 260px;
+  }
+  .plano-card h3 { color: #1565c0; margin-top: 0; font-size: 1.3rem; }
+  .plano-card p { color: #555; margin-bottom: 15px; font-size: 1rem; }
+  .plano-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    text-align: left;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  .plano-card strong {
+    display: block;
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: #0d47a1;
+  }
+  .botao {
+    background-color: #1565c0;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+  .plano-recomendado {
+    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+    color: #fff;
+    font-weight: 700;
+    padding: 18px 15px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(25, 118, 210, 0.6);
+    margin-bottom: 12px;
+    display: inline-block;
+    font-size: 1rem;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="header-left">
+      <h1>Marcap</h1>
+      <p>Atenda seus clientes no WhatsApp automaticamente e pare de responder as mesmas perguntas</p>
+    </div>
+    <div class="header-right">
+    <a href="http://72.60.59.99:3000/login.html">Login</a>
+    </div>
+  </div>
+</header>
+
+<div class="top-section">
+  <div class="top-left">
+    <p>Escolha um plano e deixe a IA cuidar do seu WhatsApp por você</p>
+  </div>
+</div>
+
+<div class="whatsapp-flutuante">
+  <div class="chat-header">
+    <img src="https://randomuser.me/api/portraits/women/68.jpg">
+    <span>Secretaria Marcap</span>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="digitando" id="digitando"></div>
+</div>
+
+<section class="planos">
+<h2>Planos disponíveis</h2>
+
+<div class="plano-cards">
+
+<article class="plano-card">
+  <h3>Starter</h3>
+  <p>Ideal para pequenos negócios</p>
+  <ul>
+    <li>?? Atendimento automático no WhatsApp</li>
+    <li>?? Respostas para dúvidas frequentes</li>
+    <li>? Atendimento 24h</li>
+    <li>?? Até 100 respostas automáticas/mês</li>
+  </ul>
+  <strong>R$ 79,90/mês</strong>
+  <a class="botao">Começar agora</a>
+</article>
+
+<article class="plano-card destaque">
+  <span class="plano-recomendado">Plano recomendado</span>
+  <h3>Profissional</h3>
+  <p>Mais controle e eficiência</p>
+  <ul>
+    <li>?? Respostas mais naturais e personalizadas</li>
+    <li>?? Personalização do atendimento</li>
+    <li>?? Relatórios de conversas</li>
+    <li>?? Até 250 respostas automáticas/mês</li>
+  </ul>
+  <strong>R$ 99,90/mês</strong>
+  <a class="botao">Quero automatizar</a>
+</article>
+
+<article class="plano-card">
+  <h3>Premium</h3>
+  <p>Para alto volume de mensagens</p>
+  <ul>
+    <li>? IA como primeira linha de atendimento</li>
+    <li>?? Identificação de comprovantes de pagamento</li>
+    <li>? Agendamento automático</li>
+    <li>?? Até 600 respostas automáticas/mês</li>
+  </ul>
+  <strong>R$ 199,90/mês</strong>
+  <a class="botao">Falar com especialista</a>
+</article>
+
+</div>
+</section>
+
+<script>
+const mensagens = [
+  { autor: 'client', texto: 'Oi, qual o horário de atendimento?' },
+  { autor: 'secretaria', texto: 'Atendemos de segunda a sexta, das 9h às 18h ??' },
+  { autor: 'client', texto: 'Vocês fazem agendamento?' },
+  { autor: 'secretaria', texto: 'Sim! Posso te ajudar a marcar um horário agora mesmo.' }
+];
+
+const chat = document.getElementById('chatMessages');
+const digitando = document.getElementById('digitando');
+
+async function iniciarChat() {
+  for (const msg of mensagens) {
+    digitando.textContent = msg.autor === 'secretaria' ? 'Secretária está digitando...' : '';
+    await new Promise(r => setTimeout(r, 900));
+    digitando.textContent = '';
+
+    const div = document.createElement('div');
+    div.className = `message ${msg.autor}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = msg.texto;
+
+    div.appendChild(bubble);
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+}
+window.onload = iniciarChat;
+</script>
+
+</body>
+</html>

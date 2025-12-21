@@ -1,11 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Marcap - Planos</title>
 <style>
-  /* ======== ESTILOS GERAIS ======== */
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f6f8;
@@ -14,7 +13,6 @@
     padding: 0;
   }
 
-  /* ======== CABEÇALHO ======== */
   header {
     background-color: #0d47a1;
     color: white;
@@ -49,7 +47,6 @@
     font-weight: 600;
   }
 
-  /* ======== SEÇÃO PRINCIPAL ======== */
   .top-section {
     max-width: 1200px;
     margin: 40px auto;
@@ -69,7 +66,6 @@
     color: #0d47a1;
   }
 
-  /* ======== CHAT ======== */
   .whatsapp-flutuante {
     position: relative;
     width: 100%;
@@ -128,7 +124,6 @@
     padding: 6px 14px;
   }
 
-  /* ======== PLANOS ======== */
   .planos {
     max-width: 1200px;
     margin: 40px auto;
@@ -207,7 +202,7 @@
       <p>Atenda seus clientes no WhatsApp automaticamente e pare de responder as mesmas perguntas</p>
     </div>
     <div class="header-right">
-    <a href="http://72.60.59.99:3000/login.html">Login</a>
+      <a href="http://72.60.59.99:3000/login.html">Login</a>
     </div>
   </div>
 </header>
@@ -221,7 +216,7 @@
 <div class="whatsapp-flutuante">
   <div class="chat-header">
     <img src="https://randomuser.me/api/portraits/women/68.jpg">
-    <span>Secretaria Marcap</span>
+    <span>Secretária Marcap</span>
   </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="digitando" id="digitando"></div>
@@ -236,13 +231,13 @@
   <h3>Starter</h3>
   <p>Ideal para pequenos negócios</p>
   <ul>
-    <li>?? Atendimento automático no WhatsApp</li>
-    <li>?? Respostas para dúvidas frequentes</li>
-    <li>? Atendimento 24h</li>
-    <li>?? Até 100 respostas automáticas/mês</li>
+    <li>🤖 Atendimento automático no WhatsApp</li>
+    <li>💬 Respostas para dúvidas frequentes</li>
+    <li>⏰ Atendimento 24h</li>
+    <li>📊 Até 100 respostas automáticas/mês</li>
   </ul>
   <strong>R$ 79,90/mês</strong>
-  <a class="botao">Começar agora</a>
+  <a class="botao" href="https://wa.me/5547997863453" target="_blank">Começar agora</a>
 </article>
 
 <article class="plano-card destaque">
@@ -250,26 +245,26 @@
   <h3>Profissional</h3>
   <p>Mais controle e eficiência</p>
   <ul>
-    <li>?? Respostas mais naturais e personalizadas</li>
-    <li>?? Personalização do atendimento</li>
-    <li>?? Relatórios de conversas</li>
-    <li>?? Até 250 respostas automáticas/mês</li>
+    <li>🧠 Respostas mais naturais e personalizadas</li>
+    <li>⚙️ Personalização do atendimento</li>
+    <li>📈 Relatórios de conversas</li>
+    <li>📊 Até 250 respostas automáticas/mês</li>
   </ul>
   <strong>R$ 99,90/mês</strong>
-  <a class="botao">Quero automatizar</a>
+  <a class="botao" href="https://wa.me/5547997863453" target="_blank">Quero automatizar</a>
 </article>
 
 <article class="plano-card">
   <h3>Premium</h3>
   <p>Para alto volume de mensagens</p>
   <ul>
-    <li>? IA como primeira linha de atendimento</li>
-    <li>?? Identificação de comprovantes de pagamento</li>
-    <li>? Agendamento automático</li>
-    <li>?? Até 600 respostas automáticas/mês</li>
+    <li>🚀 IA como primeira linha de atendimento</li>
+    <li>💳 Identificação de comprovantes de pagamento</li>
+    <li>📅 Agendamento automático</li>
+    <li>📊 Até 600 respostas automáticas/mês</li>
   </ul>
   <strong>R$ 199,90/mês</strong>
-  <a class="botao">Falar com especialista</a>
+  <a class="botao" href="https://wa.me/5547997863453" target="_blank">Falar com especialista</a>
 </article>
 
 </div>
@@ -278,7 +273,7 @@
 <script>
 const mensagens = [
   { autor: 'client', texto: 'Oi, qual o horário de atendimento?' },
-  { autor: 'secretaria', texto: 'Atendemos de segunda a sexta, das 9h às 18h ??' },
+  { autor: 'secretaria', texto: 'Atendemos de segunda a sexta, das 9h às 18h 😊' },
   { autor: 'client', texto: 'Vocês fazem agendamento?' },
   { autor: 'secretaria', texto: 'Sim! Posso te ajudar a marcar um horário agora mesmo.' }
 ];

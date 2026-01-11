@@ -13,7 +13,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 header {
   background-color: #0d47a1;
   color: white;
@@ -31,11 +30,13 @@ header {
   margin: 0;
   font-size: 2.2rem;
   font-weight: 700;
+  letter-spacing: 1px;
 }
 .header-left p {
   margin: 10px 0 0;
   font-size: 1.4rem;
   color: #dfe6f0;
+  font-weight: 500;
 }
 .header-right a {
   background: #ffffff;
@@ -50,6 +51,14 @@ header {
   max-width: 1200px;
   margin: 40px auto;
   padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.top-left {
+  flex: 1 1 300px;
 }
 .top-left p {
   font-size: 2rem;
@@ -58,12 +67,16 @@ header {
 }
 
 .whatsapp-flutuante {
+  position: relative;
+  width: 100%;
   max-width: 380px;
   margin: 0 auto;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.2);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .chat-header {
   background-color: #0d47a1;
@@ -79,10 +92,11 @@ header {
   margin-right: 10px;
 }
 .chat-messages {
+  flex: 1;
   padding: 10px;
-  height: 300px;
   overflow-y: auto;
   background: #e5ddd5;
+  height: 300px;
 }
 .message {
   display: flex;
@@ -93,16 +107,20 @@ header {
   max-width: 70%;
   padding: 10px 14px;
   border-radius: 15px;
+  font-size: 0.9rem;
 }
 .message.secretaria .bubble {
   background-color: #fff;
+  border-radius: 15px 15px 15px 0;
 }
 .message.client .bubble {
   background-color: #dcf8c6;
+  border-radius: 15px 15px 0 15px;
 }
 .digitando {
   font-style: italic;
   font-size: 0.8rem;
+  color: #777;
   padding: 6px 14px;
 }
 
@@ -114,33 +132,41 @@ header {
 .planos h2 {
   text-align: center;
   color: #0d47a1;
+  margin-bottom: 40px;
+  font-size: 1.9rem;
 }
 .plano-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   justify-content: space-between;
+  gap: 20px;
 }
 .plano-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 18px;
+  flex: 0 0 calc(30% - 13.33px);
   max-width: 320px;
-  min-width: 260px;
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  padding: 18px 15px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  min-width: 260px;
 }
-.plano-card h3 {
-  color: #1565c0;
-}
+.plano-card h3 { color: #1565c0; margin-top: 0; font-size: 1.3rem; }
+.plano-card p { color: #555; margin-bottom: 15px; font-size: 1rem; }
 .plano-card ul {
   list-style: none;
   padding: 0;
+  margin: 15px 0;
   text-align: left;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }
 .plano-card strong {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-size: 1.1rem;
   color: #0d47a1;
 }
 .botao {
@@ -150,15 +176,19 @@ header {
   border-radius: 6px;
   display: inline-block;
   text-decoration: none;
-  margin-top: 10px;
+  font-weight: 600;
+  margin-top: 8px;
 }
 .plano-recomendado {
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
   color: #fff;
-  padding: 8px;
-  border-radius: 8px;
+  font-weight: 700;
+  padding: 18px 15px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(25, 118, 210, 0.6);
+  margin-bottom: 12px;
   display: inline-block;
-  margin-bottom: 10px;
+  font-size: 1rem;
 }
 </style>
 </head>
@@ -169,7 +199,7 @@ header {
   <div class="header-container">
     <div class="header-left">
       <h1>Marcap</h1>
-      <p>Atenda seus clientes no WhatsApp automaticamente</p>
+      <p>Atenda seus clientes no WhatsApp automaticamente e pare de responder as mesmas perguntas</p>
     </div>
     <div class="header-right">
       <a href="http://72.60.59.99:3000/login.html">Login</a>
@@ -177,54 +207,75 @@ header {
   </div>
 </header>
 
+<div class="top-section">
+  <div class="top-left">
+    <p>Escolha um plano e deixe a IA cuidar do seu WhatsApp por você</p>
+  </div>
+</div>
+
+<div class="whatsapp-flutuante">
+  <div class="chat-header">
+    <img src="https://randomuser.me/api/portraits/women/68.jpg">
+    <span>Secretária Marcap</span>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="digitando" id="digitando"></div>
+</div>
+
 <section class="planos">
 <h2>Planos disponíveis</h2>
 
 <div class="plano-cards">
 
-<!-- STARTER -->
 <article class="plano-card">
   <h3>Starter</h3>
+  <p>Total controle e eficiência</p>
   <ul>
-    <li>🧠 Respostas inteligentes</li>
-    <li>📊 Até 250 respostas/mês</li>
+    <li>🧠 Respostas mais naturais e personalizadas</li>
+    <li>⚙️ Personalização do atendimento</li>
+    <li>📈 Relatórios de conversas</li>
+    <li>📊 Até 250 respostas automáticas/mês</li>
   </ul>
   <strong>R$ 99,90/mês</strong>
 
-  <!-- COLE AQUI O LINK DO PAGAR.ME -->
-  <a class="botao" href="https://payment-link-v3.pagar.me/pl_M27JYy4wRPAxkeZt6CLg1j9QaqzXWKZ8">
-    Assinar Starter
+  <!-- COLE AQUI O LINK DO PAGAR.ME (PLANO STARTER) -->
+  <a class="botao" href="https://payment-link-v3.pagar.me/pl_M27JYy4wRPAxkeZt6CLg1j9QaqzXWKZ8" target="_blank">
+    Começar agora
   </a>
 </article>
 
-<!-- PROFISSIONAL -->
-<article class="plano-card">
-  <span class="plano-recomendado">Recomendado</span>
+<article class="plano-card destaque">
+  <span class="plano-recomendado">Plano recomendado</span>
   <h3>Profissional</h3>
+  <p>Para negócios que buscam escala</p>
   <ul>
-    <li>🚀 Atendimento automático</li>
-    <li>📊 Até 600 respostas/mês</li>
+    <li>🚀 IA como primeira linha de atendimento</li>
+    <li>💳 Identificação de comprovantes de pagamento</li>
+    <li>📅 Agendamento automático</li>
+    <li>📊 Até 600 respostas automáticas/mês</li>
   </ul>
   <strong>R$ 199,90/mês</strong>
 
-  <!-- COLE AQUI O LINK DO PAGAR.ME -->
-  <a class="botao" href="https://payment-link-v3.pagar.me/pl_4zy2ZbrqmNX1NbyuldiWN1xpQgeWKBaG">
-    Assinar Profissional
+  <!-- COLE AQUI O LINK DO PAGAR.ME (PLANO PROFISSIONAL) -->
+  <a class="botao" href="https://payment-link-v3.pagar.me/pl_4zy2ZbrqmNX1NbyuldiWN1xpQgeWKBaG" target="_blank">
+    Quero automatizar
   </a>
 </article>
 
-<!-- ENTERPRISE -->
 <article class="plano-card">
   <h3>Enterprise</h3>
+  <p>Solução completa para empresas visionárias</p>
   <ul>
-    <li>♾️ Uso ilimitado</li>
+    <li>✅ Atendimentos ilimitados(fair use)</li>
+    <li>🎯 IA personalizada por segmento (vendas, suporte, agendamento, etc.)</li>
+    <li>🛠️ Ajustes e melhorias mensais incluídos</li>
     <li>⚡ Suporte prioritário</li>
   </ul>
   <strong>R$ 499,90/mês</strong>
 
-  <!-- COLE AQUI O LINK DO PAGAR.ME -->
-  <a class="botao" href="https://payment-link-v3.pagar.me/pl_6DYlL5Zdn97xmOrcEh1oMAJkqpXr4y1Q">
-    Assinar Enterprise
+  <!-- COLE AQUI O LINK DO PAGAR.ME (PLANO ENTERPRISE) -->
+  <a class="botao" href="https://payment-link-v3.pagar.me/pl_6DYlL5Zdn97xmOrcEh1oMAJkqpXr4y1Q" target="_blank">
+    Falar com especialista
   </a>
 </article>
 
@@ -234,7 +285,9 @@ header {
 <script>
 const mensagens = [
   { autor: 'client', texto: 'Oi, gostaria de marcar um horário' },
-  { autor: 'secretaria', texto: 'Oi, claro! Qual serviço e melhor horário?' }
+  { autor: 'secretaria', texto: 'Oi, claro! Qual serviço e melhor horário? 😊' },
+  { autor: 'client', texto: 'Amanhâ as 15 uma ultrasom' },
+  { autor: 'secretaria', texto: 'Verifiquei aqui e esse horário está disponível, já agendei. Tenha um ótimo dia, se precisar de algo mais estou a disposição.' }
 ];
 
 const chat = document.getElementById('chatMessages');
@@ -242,18 +295,27 @@ const digitando = document.getElementById('digitando');
 
 async function iniciarChat() {
   for (const msg of mensagens) {
+    digitando.textContent = msg.autor === 'secretaria' ? 'Secretária está digitando...' : '';
+    await new Promise(r => setTimeout(r, 900));
+    digitando.textContent = '';
+
     const div = document.createElement('div');
-    div.className = message ${msg.autor};
+    div.className = `message ${msg.autor}`;
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
     bubble.textContent = msg.texto;
+
     div.appendChild(bubble);
     chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
   }
 }
+window.onload = iniciarChat;
 </script>
 
 </body>
 </html>
+
+
 
 

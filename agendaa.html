@@ -145,13 +145,16 @@
 </div>
 
 <script>
-const clientId = localStorage.getItem('clientId'); // <<< Substituição crítica
+const clientId = localStorage.getItem('clientId');
 const sessionId = localStorage.getItem('sessionId');
 if (!clientId || !sessionId) {
   alert("Sessão expirada. Faça login novamente.");
-  location.href = '/login.html'; // Redireciona para a página de login
+  location.href = '/login.html';
 }
 const headers = {'x-session-id': sessionId, 'Content-Type': 'application/json'};
+
+// Variáveis de controle da agenda
+let currentDate = new Date();
 
 $(document).ready(function() {
 
@@ -164,38 +167,80 @@ $(document).ready(function() {
     $('main.content section').eq(idx).addClass('active');
   });
 
-  // QR CODE
-  $('#qrcode-btn').click(async function() {
-    $('#qrcode-container').hide().html('');
-    try {
-      await fetch(`/api/bot/${clientId}/create`, { method: 'POST', headers });
-      let qr = null;
-      for (let i = 0; i < 15; i++) {
-        const res = await fetch(`/api/bot/${clientId}/qr`, { headers });
-        const data = await res.json();
-        if (data.qr) { qr = data.qr; break; }
-        await new Promise(r => setTimeout(r, 1000));
-      }
-      if (qr) {
-        $('#qrcode-container').html(`<img src="${qr}" alt="QR Code">`).fadeIn();
-      } else {
-        alert("✅ WhatsApp conectado com sucesso!");
-      }
-    } catch (e) {
-      console.error(e);
-      alert("Erro ao gerar QR Code");
-    }
+  // Atualiza a data atual na agenda
+  function updateDateDisplay() {
+    $('#currentDate').text(currentDate.toLocaleDateString());
+  }
+
+  // Navegação no calendário
+  $('#prevDay').click(function() {
+    currentDate.setDate(currentDate.getDate() - 1);
+    updateDateDisplay();
+    loadAgendaData();
   });
 
-  // RESTO DO SCRIPT FICA IGUAL AO ORIGINAL
-  // SECRETÁRIA, AGENDA, COMPORTAMENTO
-  // ...
+  $('#nextDay').click(function() {
+    currentDate.setDate(currentDate.getDate() + 1);
+    updateDateDisplay();
+    loadAgendaData();
+  });
+
+  $('#todayBtn').click(function() {
+    currentDate = new Date();
+    updateDateDisplay();
+    loadAgendaData();
+  });
+
+  // Carrega os dados da agenda
+  async function loadAgendaData() {
+    try {
+      const response = await fetch(`/api/agenda/${clientId}?date=${currentDate.toISOString()}`, { headers });
+      const data = await response.json();
+      renderAgenda(data);
+    } catch (error) {
+      console.error("Erro ao carregar dados da agenda", error);
+    }
+  }
+
+  // Renderiza a agenda
+  function renderAgenda(data) {
+    // Limpa as colunas e o tempo
+    $('#columnsContainer').empty();
+    $('#timeColumn').empty();
+
+    // Exibe horários na coluna esquerda
+    const hours = [...Array(24).keys()];
+    hours.forEach(hour => {
+      const hourLabel = $('<div>').addClass('time-cell').text(`${hour}:00`);
+      $('#timeColumn').append(hourLabel);
+    });
+
+    // Exibe os colaboradores
+    data.professionals.forEach(prof => {
+      const column = $('<div>').addClass('column');
+      const columnHeader = $('<div>').addClass('column-header').text(prof.name);
+      column.append(columnHeader);
+
+      prof.schedule.forEach(slot => {
+        const slotDiv = $('<div>').addClass('slot').text(slot.time);
+        column.append(slotDiv);
+      });
+
+      $('#columnsContainer').append(column);
+    });
+  }
+
+  // Chama a primeira carga de dados
+  updateDateDisplay();
+  loadAgendaData();
 
 });
 </script>
 
 </body>
 </html>
+
+
 
 
 

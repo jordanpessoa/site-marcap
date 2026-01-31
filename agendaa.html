@@ -145,43 +145,61 @@ input:checked + .slider:before { transform:translateX(26px); }
 </div>
 
 <script>
-const clientId = localStorage.getItem('clientId'); // <<< Substituição crítica
 const sessionId = localStorage.getItem('sessionId');
-if(!clientId || !sessionId){ alert("Sessão expirada. Faça login novamente."); location.href='/login.html'; }
-const headers = {'x-session-id': sessionId,'Content-Type':'application/json'};
+if (!sessionId) {
+  alert("Sessão expirada. Faça login novamente.");
+  location.href = '/login.html';
+}
+const headers = { 'x-session-id': sessionId, 'Content-Type': 'application/json' };
 
-$(document).ready(function(){
+$(document).ready(function () {
 
   // MENU LATERAL
-  $('nav.sidebar li').click(function(){
-    $('nav.sidebar li').removeClass('active'); $(this).addClass('active');
-    const idx=$(this).index();
+  $('nav.sidebar li').click(function () {
+    $('nav.sidebar li').removeClass('active');
+    $(this).addClass('active');
+    const idx = $(this).index();
     $('main.content section').removeClass('active');
     $('main.content section').eq(idx).addClass('active');
   });
 
   // QR CODE
-  $('#qrcode-btn').click(async function(){
+  $('#qrcode-btn').click(async function () {
     $('#qrcode-container').hide().html('');
-    try{
-      await fetch(`/api/bot/${clientId}/create`,{method:'POST',headers});
-      let qr=null;
-      for(let i=0;i<15;i++){
-        const res = await fetch(`/api/bot/${clientId}/qr`,{headers});
+    try {
+      // Criação do cliente WhatsApp usando sessão ativa
+      await fetch(`/api/bot/me/create`, { method: 'POST', headers });
+
+      let qr = null;
+      // Polling do QR Code até estar disponível
+      for (let i = 0; i < 15; i++) {
+        const res = await fetch(`/api/bot/me/qr`, { headers });
         const data = await res.json();
-        if(data.qr){ qr=data.qr; break; }
-        await new Promise(r=>setTimeout(r,1000));
+        if (data.qr) {
+          qr = data.qr;
+          break;
+        }
+        await new Promise(r => setTimeout(r, 1000));
       }
-      if(qr) $('#qrcode-container').html(`<img src="${qr}" alt="QR Code">`).fadeIn();
-      else alert("✅ WhatsApp conectado com sucesso!");
-    }catch(e){ console.error(e); alert("Erro ao gerar QR Code"); }
+
+      if (qr) {
+        $('#qrcode-container').html(`<img src="${qr}" alt="QR Code">`).fadeIn();
+      } else {
+        alert("✅ WhatsApp conectado com sucesso!");
+      }
+
+    } catch (e) {
+      console.error(e);
+      alert("Erro ao gerar QR Code");
+    }
   });
 
   // RESTO DO SCRIPT FICA IGUAL AO ORIGINAL
   // SECRETÁRIA, AGENDA, COMPORTAMENTO
   // ...
-  // (Mantém exatamente todo o código do seu script anterior sem alterações)
 });
 </script>
 </body>
 </html>
+
+

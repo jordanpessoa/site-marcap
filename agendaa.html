@@ -145,8 +145,8 @@
 </div>
 
 <script>
-const clientId = localStorage.getItem('clientId'); // <<< Substituição crítica
-const sessionId = localStorage.getItem('sessionId');
+const clientId = localStorage.getItem('clientId'); // ID do cliente logado
+const sessionId = localStorage.getItem('sessionId'); // ID da sessão ativa
 if (!clientId || !sessionId) {
   alert("Sessão expirada. Faça login novamente.");
   location.href = '/login.html'; // Redireciona para a página de login
@@ -166,27 +166,27 @@ $(document).ready(function() {
 
   // QR CODE
   $('#qrcode-btn').click(async function() {
-    $('#qrcode-container').hide().html('');
+    $('#qrcode-container').hide().html(''); // Limpa qualquer conteúdo anterior
     try {
-      await fetch(`/api/bot/me/create`, { method: 'POST', headers });
+      await fetch(`/api/bot/me/create`, { method: 'POST', headers }); // Cria bot (se necessário)
 
       let qr = null;
       for (let i = 0; i < 15; i++) {
         const res = await fetch(`/api/bot/me/qr`, { headers });
-        
+
         if (!res.ok) {
           throw new Error(`Erro ao gerar QR Code: ${res.statusText}`);
         }
 
         const data = await res.json();  // Agora, só tenta processar se o status for OK
         if (data.qr) { qr = data.qr; break; }
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 1000)); // Aguarda 1 segundo para tentar novamente
       }
 
       if (qr) {
         $('#qrcode-container').html(`<img src="${qr}" alt="QR Code">`).fadeIn();
       } else {
-        alert("✅ WhatsApp conectado com sucesso!");
+        alert("✅ WhatsApp conectado com sucesso!"); // Caso o QR Code tenha expirado
       }
 
     } catch (e) {
@@ -198,9 +198,10 @@ $(document).ready(function() {
 });
 </script>
 
-
 </body>
 </html>
+
+
 
 
 
